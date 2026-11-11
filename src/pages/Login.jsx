@@ -64,7 +64,7 @@ export default function Login(){
         
             <div className="form-login">
                 <div className="informacoes">
-                    <input type="text" onChange={e => setEmail(e.target.value)} placeholder="Insira seu email"/>
+                    <input type="email" onChange={e => setEmail(e.target.value)} placeholder="Insira seu email"/>
                     <div className="senhaArea">
                         <input type="password" onChange={e => setSenha(e.target.value)} placeholder="Insira sua senha"/> <br />
                         <button className="esqueciSenha" onClick={() => resetSenha()}>Esqueci minha senha</button>
