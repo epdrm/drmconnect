@@ -93,22 +93,26 @@ export default function RespostasPergunta({ respostas, funcaoDeAtualizar, id }){
                 {respostas.length === 0 ? (
                     <p style={{ color: "#999", fontSize: "14px" }}>Nenhuma resposta ainda. Seja o primeiro a responder!</p>
                 ) : (
-                    respostas.map((resposta) => (
-                        <div key={resposta.id} className="resposta-card">
-                            <div className="resposta-header">
-                                <img 
-                                    src={resposta.user_avatar || "https://via.placeholder.com/36"} 
-                                    alt={resposta.user_responde}
-                                    className="resposta-avatar"
-                                    {...clique(resposta.id_user)}
-                                />
-                                <div className="resposta-user-info">
-                                    <span className="resposta-username" {...clique(resposta.id_user)}>{resposta.user_responde}</span>
+                    respostas.map((resposta) => {
+                        const dataResposta = new Date(resposta.create_at)
+                        return (
+                            <div key={resposta.id} className="resposta-card">
+                                <div className="resposta-header">
+                                    <img
+                                        src={resposta.user_avatar || "https://via.placeholder.com/36"}
+                                        alt={resposta.user_responde}
+                                        className="resposta-avatar"
+                                        {...clique(resposta.id_user)}
+                                    />
+                                    <div className="resposta-user-info">
+                                        <span className="resposta-username" {...clique(resposta.id_user)}>{resposta.user_responde}</span>
+                                        <span className="resposta-time">{dataResposta.toLocaleDateString("pt-BR")} às {dataResposta.toLocaleTimeString("pt-BR")}</span>
+                                    </div>
                                 </div>
+                                <p className="resposta-texto">{resposta.description}</p>
                             </div>
-                            <p className="resposta-texto">{resposta.description}</p>
-                        </div>
-                    ))
+                        )
+                    })
                 )}
             </div>
         </div>

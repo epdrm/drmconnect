@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function PerguntaDetalhada({ user, user_avatar, descricao, img, titulo, curtidas, idp, modalReport, fdp, create, idUser }){
     const irPara = useNavigate()
-    const [ texto, setTexto ] = useState(create)
-    const data = texto?.slice(0,10)
-    const hora = texto?.slice(11, 16)
+    const data = new Date(create)
     // foto e nome do autor levam para o perfil dele (so se tiver o id do autor)
     const clique = idUser ? { onClick: () => irPara(`/perfil/${idUser}`), style: { cursor: "pointer" } } : {}
 
@@ -17,7 +15,7 @@ export default function PerguntaDetalhada({ user, user_avatar, descricao, img, t
                 <img src={user_avatar} alt={user} className="avatar" {...clique} />
                 <div className="user-info">
                     <span className="username" {...clique}>{user}</span>
-                    <span className="time">{data} as {hora}</span>
+                    <span className="time">{data.toLocaleDateString("pt-BR")} às {data.toLocaleTimeString("pt-BR")}</span>
                 </div>
             </div>
 
