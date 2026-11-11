@@ -32,6 +32,7 @@ export default function Home(){
   const [motivoReport, setMotivoReport] = useState('')
   const [modalReport, setModalReport] = useState(false)
   const [scrollBody, setScrollBody] = useState(false)
+  const [enviando, setEnviando] = useState(false)
   /* acima, são os estados usado para a função de puxar 10 posts por vez,
   pagina = quando o sistema puxa os primeiros 10, ele vai esta em 0, mas quando ele subir 1, significa pro sistema que tem mais 10 sendo
   puxados
@@ -92,9 +93,17 @@ export default function Home(){
       return
     }
 
+    setEnviando(true)
     try{
       // chama função do /services, para joga a imagem que o usuario quer colocar, no bucket do supa
       let imgUrlLocal = await envImagensStorage("imagens-posts", img)
+
+      // se tinha imagem e o upload falhou (retornou null), interrompe e avisa
+      if (img && imgUrlLocal === null) {
+        alert("Falha ao enviar a imagem. Tente novamente.")
+        return
+      }
+
       // faz verificação de sessao/usuario para consegui nome de usuario e foto do tal
       const { data: { user }, error } = await supabase.auth.getUser()
       if(!user || error){
@@ -102,7 +111,7 @@ export default function Home(){
         return
       }
       const usuarioNome = user.user_metadata?.full_name || user.user_metadata?.name ||  user.user_metadata?.display_name || "???"
-      const avatar = user.user_metadata?.avatar_url || null 
+      const avatar = user.user_metadata?.avatar_url || null
       const res = await supabase
       .from("posts")
       .insert({
@@ -124,6 +133,8 @@ export default function Home(){
 
   }catch(error){
     console.error(error)
+  } finally {
+    setEnviando(false)
   }}
 // função para ver mais posts (se o temMais == true)
   const verMais = () => {
@@ -206,8 +217,10 @@ export default function Home(){
 
             <div className="form-envio">
               <input type="file" accept="image/png,image/jpeg" onChange={e => setImg(e.target.files[0])} id="input-file" style={{display: "none"}}/>
-              <label htmlFor="input-file"><img src={iconImagem} alt="Icon de imagem" style={{width: "30px", height: "30px", cursor: "pointer"}}/></label>  
-              <button onClick={criarPost}>postar</button>
+              <label htmlFor="input-file"><img src={iconImagem} alt="Icon de imagem" style={{width: "30px", height: "30px", cursor: "pointer"}}/></label>
+              <button onClick={criarPost} disabled={enviando}>
+                {enviando ? "Enviando..." : "postar"}
+              </button>
             </div>
 
           </div>
