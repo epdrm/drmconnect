@@ -4,11 +4,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    
-    
-    @supports not (background-image: url(".webp")) {
-        background-image: url("./../assets/paginaInicial/mockup-pergunta.png");
-    }
 }
 
 
@@ -18,10 +13,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    
-    @supports not (background-image: url(".webp")) {
-        background-image: url("./../assets/paginaInicial/mockup-resposta.png");
-    }
 }
 
 
@@ -31,10 +22,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: scroll;
-    
-    @supports not (background-image: url(".webp")) {
-        background-image: url("./../assets/paginaInicial/mockup-comunidade.png");
-    }
 }
 
 
