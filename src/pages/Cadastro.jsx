@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { supabase } from "../supabase/supabase"
 import Logo from "./../assets/logo/logo-icone.png"
 import GoogleIcon from "./../assets/loginCadastro/icones/googleIcon.jpg"
@@ -21,7 +21,7 @@ export default function Cadastro(){
             options:{
                 data:{
                     full_name: userName,
-                    avatar_url: 'https://scnxpjdfdwphaxgonxvq.supabase.co/storage/v1/object/public/perfilFotoDefault/219eaea67aafa864db091919ce3f5d82.jpg'
+                    avatar_url: import.meta.env.VITE_AVATAR_PADRAO
                 }
             }
         })
@@ -63,7 +63,7 @@ export default function Cadastro(){
                 <div className="botoesCadastro">
                     <div className="check-box-termos">
                         <input type="checkbox" checked={marcado} onChange={(e) => setMarcado(e.target.checked)} />
-                        <label>Li e aceito os <a target="_blank" href="https://drmconnect.vercel.app/termos">Termos De Uso</a></label>
+                        <label>Li e aceito os <Link to="/termos">Termos De Uso</Link></label>
                     </div>
                     <button className="cadastroBTT" disabled={!marcado} onClick={() => cadastrar()}>Cadastrar</button>
                     <div className="loginLink">

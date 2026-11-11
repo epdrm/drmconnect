@@ -46,7 +46,7 @@ export default function Login(){
         }
         // aq ele vai enviar pro servidor SMTP enviar um email pre-configurado, com link para alterar a senha
         const res = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://drmconnect.vercel.app/resetSenha'
+            redirectTo: `${window.location.origin}/resetSenha`
         })
         if(res.error){
             alert("Algo deu errado, verifique se inseriu o email corretamente!")
