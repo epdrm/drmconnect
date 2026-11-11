@@ -391,9 +391,9 @@
     }
 }
 
-.section-perguntar::bottom,
-.section-responder::bottom,
-.section-aprender::bottom {
+.section-perguntar::after,
+.section-responder::after,
+.section-aprender::after {
     content: "";
     position: absolute;
     bottom: 0;
