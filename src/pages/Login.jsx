@@ -36,7 +36,7 @@ export default function Login(){
             },
         },
         });
-        if (error) toast.error(error.message);
+        if (error) alert(error.message);
     };
     // função para envio do email para reseta senha
     async function resetSenha() {

@@ -45,7 +45,7 @@ export default function Cadastro(){
             },
         },
         });
-        if (error) toast.error(error.message);
+        if (error) alert(error.message);
     };
     return(
         <div className="cadastro-tudo">
@@ -74,7 +74,7 @@ export default function Cadastro(){
             </div>
             <div className="contaAlt">
                 <p><span className="avisoGoogle">Não é possivel entrar/cadastrar (pelo google) com email instituicional</span></p>
-                <button  onClick={() => handleOAuthLogin("google")}>
+                <button onClick={handleOAuthLogin}>
                     <img src={GoogleIcon} alt="icone do google" />
                 </button>
             </div>
