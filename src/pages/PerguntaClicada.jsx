@@ -10,14 +10,17 @@ export default function PerguntaClicada(){
     const { id } = useParams()
     const [pergunta, setPergunta] = useState({})
     const [respostas, setRespostas] = useState([])
-    const [carregando, setCarregando] = useState(false)
+    const [carregando, setCarregando] = useState(true)
     const [idPostReport, setIdPostReport] = useState('')
     const [motivoReport, setMotivoReport] = useState('')
     const [modalReport, setModalReport] = useState(false)
+    const [erro, setErro] = useState(null)
+    const [naoEncontrado, setNaoEncontrado] = useState(false)
 
     async function carregarDados() {
-        setCarregando(true)
-        
+        setErro(null)
+        setNaoEncontrado(false)
+
         const resPergunta = await supabase
             .from("posts")
             .select('*')
@@ -28,10 +31,27 @@ export default function PerguntaClicada(){
             .from("post_respostas")
             .select('*')
             .eq("id_post", id)
+            .order("create_at", {ascending: true})
 
-        if(resPergunta.error) return console.error(resPergunta.error.message);
-        if(resRespostas.error) return console.error(resRespostas.error.message);
-        
+        if(resPergunta.error){
+            setCarregando(false)
+            setErro(resPergunta.error.message)
+            return console.error(resPergunta.error.message);
+        }
+
+        // Post não encontrado (resPergunta.data é null)
+        if (!resPergunta.data) {
+            setCarregando(false)
+            setNaoEncontrado(true)
+            return
+        }
+
+        if(resRespostas.error){
+            setCarregando(false)
+            setErro(resRespostas.error.message)
+            return console.error(resRespostas.error.message);
+        }
+
         setPergunta(resPergunta.data)
         setRespostas(resRespostas.data)
         setCarregando(false)
@@ -87,11 +107,21 @@ export default function PerguntaClicada(){
                     <div className="post-principal">
                         {carregando ? (
                             <p>Carregando...</p>
+                        ) : erro ? (
+                            <div className="erro-container">
+                                <p>Erro ao carregar o post</p>
+                                <a href="/home">← Voltar para o feed</a>
+                            </div>
+                        ) : naoEncontrado ? (
+                            <div className="erro-container">
+                                <p>Post não encontrado</p>
+                                <a href="/home">← Voltar para o feed</a>
+                            </div>
                         ) : (
-                            <PerguntaDetalhada 
-                                user={pergunta.user} 
-                                user_avatar={pergunta.avatar} 
-                                descricao={pergunta.description} 
+                            <PerguntaDetalhada
+                                user={pergunta.user}
+                                user_avatar={pergunta.avatar}
+                                descricao={pergunta.description}
                                 img={pergunta.imagens}
                                 titulo={pergunta.titulo}
                                 curtidas={pergunta.curtidas}
@@ -105,13 +135,15 @@ export default function PerguntaClicada(){
                     </div>
 
                     {/* RESPOSTAS */}
-                    <div className="secao-respostas">
-                        <RespostasPergunta 
-                            respostas={respostas} 
-                            funcaoDeAtualizar={carregarDados} 
-                            id={id}
-                        />
-                    </div>
+                    {!carregando && !erro && !naoEncontrado && (
+                        <div className="secao-respostas">
+                            <RespostasPergunta
+                                respostas={respostas}
+                                funcaoDeAtualizar={carregarDados}
+                                id={id}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
 

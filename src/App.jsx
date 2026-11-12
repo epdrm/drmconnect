@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"; // Removido o 'data' não utilizado
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "./supabase/supabase";
 import Login from "./pages/Login";
@@ -54,7 +54,7 @@ export default function App(){
 
   return (
     <BrowserRouter>
-      <Routes>
+        <Routes>
         <Route path="/" element={loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <p>Autenticando sessão...</p>

@@ -49,7 +49,8 @@
   border-bottom: 1px solid var(--purple-800);
 }
 
-.avatar {
+.avatar-img,
+.avatar-vazio {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -228,7 +229,8 @@
   margin-bottom: 10px;
 }
 
-.resposta-avatar {
+.resposta-avatar.avatar-img,
+.resposta-avatar.avatar-vazio {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -302,10 +304,12 @@
     font-size: 13px;
   }
 
-  .avatar,
+  .avatar-img,
+  .avatar-vazio,
   .resposta-avatar {
     width: 32px;
     height: 32px;
+    font-size: 13px;
   }
 
   .enviar-resposta-form textarea {

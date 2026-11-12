@@ -36,7 +36,7 @@ export default function Login(){
             },
         },
         });
-        if (error) toast.error(error.message);
+        if (error) alert(error.message);
     };
     // função para envio do email para reseta senha
     async function resetSenha() {
@@ -46,7 +46,7 @@ export default function Login(){
         }
         // aq ele vai enviar pro servidor SMTP enviar um email pre-configurado, com link para alterar a senha
         const res = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://drmconnect.vercel.app/resetSenha'
+            redirectTo: `${window.location.origin}/resetSenha`
         })
         if(res.error){
             alert("Algo deu errado, verifique se inseriu o email corretamente!")
@@ -64,7 +64,7 @@ export default function Login(){
         
             <div className="form-login">
                 <div className="informacoes">
-                    <input type="text" onChange={e => setEmail(e.target.value)} placeholder="Insira seu email"/>
+                    <input type="email" onChange={e => setEmail(e.target.value)} placeholder="Insira seu email"/>
                     <div className="senhaArea">
                         <input type="password" onChange={e => setSenha(e.target.value)} placeholder="Insira sua senha"/> <br />
                         <button className="esqueciSenha" onClick={() => resetSenha()}>Esqueci minha senha</button>

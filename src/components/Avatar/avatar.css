@@ -1,0 +1,28 @@
+/* ===== AVATAR COMPONENT ===== */
+.avatar-img {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--purple-700);
+}
+
+.avatar-vazio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--purple-700);
+  color: var(--purple-100);
+  border-radius: 50%;
+  font-weight: bold;
+  flex-shrink: 0;
+  border: 1px solid var(--purple-600);
+  user-select: none;
+}
+
+/* Size presets */
+.avatar-xs { width: 24px; height: 24px; font-size: 10px; }
+.avatar-sm { width: 32px; height: 32px; font-size: 13px; }
+.avatar-md { width: 36px; height: 36px; font-size: 14px; }
+.avatar-lg { width: 40px; height: 40px; font-size: 16px; }
+.avatar-xl { width: 50px; height: 50px; font-size: 20px; }
+.avatar-2xl { width: 120px; height: 120px; font-size: 48px; }

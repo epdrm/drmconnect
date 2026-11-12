@@ -3,6 +3,7 @@ import Titulo from "./elements/Titulo";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import { useNavigate } from "react-router-dom";
+import Avatar from "../Avatar";
 
 export default function PostComunidade({ user, titulo, conteudo, imgs, avatar, idUser }){
     const irPara = useNavigate()
@@ -19,11 +20,14 @@ export default function PostComunidade({ user, titulo, conteudo, imgs, avatar, i
     return(
         <div className="content-post">
             <div className="cabeca-post">
-                {avatar == null ? <span {...clique}>{user}</span> : <span {...clique}><img src={avatar} style={{width: "30px", borderRadius:"360px"}}/> {user}</span>} <br />
+                <span {...clique}>
+                    <Avatar src={avatar} alt={user} size={36} className="avatar-md" />
+                    {user}
+                </span> <br />
             </div>
             <div className="corpo-post">
                 <Descricao conteudo={conteudo} />
-                {imgs == null ? <span></span> : <Zoom ><img src={imgs} /></Zoom>} 
+                {imgs == null ? <span></span> : <Zoom ><img src={imgs} /></Zoom>}
             </div>
         </div>
     )
