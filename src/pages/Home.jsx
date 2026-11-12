@@ -12,6 +12,7 @@ import Navbar from "../layout/Navbar";
 import { ChevronLeft } from 'lucide-react';
 import Noticias from "../layout/Noticias";
 import useMediaQuery, { TELA_SEM_COLUNA_NOTICIAS } from "../components/hooks/useMediaQuery";
+import Avatar from "../components/Avatar";
 
 /* ESSA É A PAGINA DE COMUNIDADE */
 export default function Home(){
@@ -187,7 +188,7 @@ export default function Home(){
     async function carregarUrlAvatar() {
       const url = await buscarImagem()
       if(url == null || !url ){
-        setFotoDoPerfil("https://placeholder.com")
+        setFotoDoPerfil(null)
       }else{
         setFotoDoPerfil(url)
       }
@@ -211,7 +212,7 @@ export default function Home(){
         <div className="posts">
           <div className="form-post">
             <div className="form-text">
-              <img src={fotoDoPerfil} />
+              <Avatar src={fotoDoPerfil} alt="Você" size={40} className="avatar-lg" />
               <textarea maxLength={200} ref={textareaRef} value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="O que você está pensando hoje?" ></textarea>
             </div>
 

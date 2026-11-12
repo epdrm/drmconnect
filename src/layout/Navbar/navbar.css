@@ -128,8 +128,6 @@
   flex-shrink: 0;
   overflow: hidden;
   padding: 0;
-  background-size: cover;
-  background-position: center;
 }
 
 .navbar-avatar:hover {
@@ -138,11 +136,11 @@
   transform: scale(1.05);
 }
 
-.navbar-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
+.navbar-avatar .avatar-img,
+.navbar-avatar .avatar-vazio {
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
 }
 
 /* Responsividade */

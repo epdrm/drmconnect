@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { supabase } from "../../supabase/supabase";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Avatar from "../Avatar";
 
 export default function RespostasPergunta({ respostas, funcaoDeAtualizar, id }){
     const irPara = useNavigate()
@@ -98,9 +99,10 @@ export default function RespostasPergunta({ respostas, funcaoDeAtualizar, id }){
                         return (
                             <div key={resposta.id} className="resposta-card">
                                 <div className="resposta-header">
-                                    <img
-                                        src={resposta.user_avatar || "https://via.placeholder.com/36"}
+                                    <Avatar
+                                        src={resposta.user_avatar}
                                         alt={resposta.user_responde}
+                                        size={36}
                                         className="resposta-avatar"
                                         {...clique(resposta.id_user)}
                                     />

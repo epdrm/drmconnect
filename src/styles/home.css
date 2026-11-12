@@ -52,7 +52,8 @@
 }
 
 /* Avatar no form */
-.form-text img {
+.form-text .avatar-img,
+.form-text .avatar-vazio {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -294,7 +295,8 @@
   width: 100%;
 }
 
-.cabeca-post img {
+.cabeca-post .avatar-img,
+.cabeca-post .avatar-vazio {
   width: 36px;
   height: 36px;
   border-radius: 50%;

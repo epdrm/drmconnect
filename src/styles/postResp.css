@@ -31,7 +31,8 @@
   border: 1px solid rgba(120, 160, 255, 0.12);
 }
 
-.cabeca-post img {
+.cabeca-post .avatar-img,
+.cabeca-post .avatar-vazio {
   width: 32px;
   height: 32px;
   border-radius: 50%;
