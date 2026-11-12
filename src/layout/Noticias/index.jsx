@@ -25,8 +25,8 @@ export default function Noticias() {
     return(
         <>
             <div className="feed-noticias">
-                {noticas.length > 0 ? noticas.map((item, index) => (
-                    <div className="item-noticia" id={index}>
+                {noticas.length > 0 ? noticas.map((item) => (
+                    <div className="item-noticia" key={item.id}>
                         <div className="item-cabeca-noticia">
                             <p><span>News</span></p>
                             <p><span id="data-noticia">{(new Date(item.created_at)).toLocaleDateString("pt-BR")} às {(new Date(item.created_at)).toLocaleTimeString("pt-BR")}</span></p>

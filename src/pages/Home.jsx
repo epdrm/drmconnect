@@ -225,8 +225,8 @@ export default function Home(){
 
           </div>
 
-          {posts.map((item, index) =>(
-            <div key={index} className="perguntas-home">
+          {posts.map((item) =>(
+            <div key={item.id} className="perguntas-home">
               <div className="postContainer">
                 <Link 
                 to={`/feed/${item.id}`}
