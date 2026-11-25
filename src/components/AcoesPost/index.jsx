@@ -5,6 +5,7 @@ import "./style.css"
 
 export default function AcoesPost({ idP, quantidadeDeCurtidas, modalReport, funcaoDeEnviarId}) {
     const [qntCurti, setQntCurti] = useState(quantidadeDeCurtidas)
+    const [prevQuantidade, setPrevQuantidade] = useState(quantidadeDeCurtidas)
     const [curtida, setCurtida] = useState(false)
     const [carregando, setCarregando] = useState(true)
 
@@ -35,9 +36,10 @@ export default function AcoesPost({ idP, quantidadeDeCurtidas, modalReport, func
     }, [idP])
 
     // Sincroniza contagem vinda do props (quando o post é atualizado externamente)
-    useEffect(() => {
+    if (quantidadeDeCurtidas !== prevQuantidade) {
+        setPrevQuantidade(quantidadeDeCurtidas)
         setQntCurti(quantidadeDeCurtidas)
-    }, [quantidadeDeCurtidas])
+    }
 
     async function curtidas() {
         if (carregando) return

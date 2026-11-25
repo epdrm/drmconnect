@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Angry, Frown, Meh, Smile, Laugh } from 'lucide-react';
 
 export default function Estrelas({funcao}){
