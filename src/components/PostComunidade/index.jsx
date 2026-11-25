@@ -1,11 +1,10 @@
 import Descricao from "./elements/Descricao";
-import Titulo from "./elements/Titulo";
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 import { useNavigate } from "react-router-dom";
 import Avatar from "../Avatar";
 
-export default function PostComunidade({ user, titulo, conteudo, imgs, avatar, idUser }){
+export default function PostComunidade({ user, conteudo, imgs, avatar, idUser }){
     const irPara = useNavigate()
 
     // o post inteiro é um <Link> para /feed/:id, ent aqui ele impede de abrir o post e vai para o perfil do autor
