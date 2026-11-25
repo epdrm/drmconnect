@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "../supabase/supabase";
 import { envImagensStorage } from "../services/uploadImages";
 import { useNavigate, Link } from "react-router-dom";
@@ -39,10 +39,9 @@ export default function Home(){
   carregamento = controle do carregamento da função de puxar posts
   temMais = se tiver mais post que ainda n foram vistos, ele fica true, se não, false
   */
-  const irPara = useNavigate()
   const telaPequena = useMediaQuery(TELA_SEM_COLUNA_NOTICIAS)
 
-   async function buscarPosts(estaPagina){
+   const buscarPosts = useCallback( async (estaPagina) =>{
     setCarregamento(true)
     /* Quando ele receber a pagina atual (quantos post devem aparecer) ele faz a seguite conta,
     a pagina atual * 10, para saber onde o banco deve começar a puxa, e o começo + 10 - 1, onde resultará no numero onde ele deve puxar
@@ -81,11 +80,7 @@ export default function Home(){
       })
     }
     setCarregamento(false)
-  }
-
-  async function desFazerLogin() {
-    const res = supabase.auth.signOut()
-  }
+  })
 // função para criar post
   async function criarPost() {
     if(!descricao.trim()){
