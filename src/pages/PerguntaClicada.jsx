@@ -17,45 +17,71 @@ export default function PerguntaClicada(){
     const [erro, setErro] = useState(null)
     const [naoEncontrado, setNaoEncontrado] = useState(false)
 
-    const carregarDados = useCallback(async () => {
-        setErro(null)
-        setNaoEncontrado(false)
+    //busca todos os dados dos supabase
+    const buscarDados = useCallback(async () => {
+        const [resPergunta, resRespostas] = await Promise.all([
+            supabase
+                .from("posts")
+                .select("*")
+                .eq("id", id)
+                .maybeSingle(),
 
-        const resPergunta = await supabase
-            .from("posts")
-            .select('*')
-            .eq('id', id)
-            .single()
+            supabase
+                .from("post_respostas")
+                .select("*")
+                .eq("id_post", id)
+                .order("create_at", { ascending: true })
+        ])
 
-        const resRespostas = await supabase
-            .from("post_respostas")
-            .select('*')
-            .eq("id_post", id)
-            .order("create_at", {ascending: true})
+        return { resPergunta, resRespostas }
+    }, [id])
 
-        if(resPergunta.error){
-            setCarregando(false)
+    //atualiza todos os estados de modo centralizado
+    const aplicarDados = useCallback(({ resPergunta, resRespostas }) => {
+
+        if (resPergunta.error) {
             setErro(resPergunta.error.message)
-            return console.error(resPergunta.error.message);
-        }
-
-        // Post não encontrado (resPergunta.data é null)
-        if (!resPergunta.data) {
             setCarregando(false)
-            setNaoEncontrado(true)
             return
         }
 
-        if(resRespostas.error){
+        if (!resPergunta.data) {
+            setNaoEncontrado(true)
             setCarregando(false)
+            return
+        }
+
+        if (resRespostas.error) {
             setErro(resRespostas.error.message)
-            return console.error(resRespostas.error.message);
+            setCarregando(false)
+            return
         }
 
         setPergunta(resPergunta.data)
         setRespostas(resRespostas.data)
+
+        setErro(null)
+        setNaoEncontrado(false)
         setCarregando(false)
-    }, [id])
+
+    }, [])
+
+    //carregar todos dados para mostrar na tela
+    const carregarDados = useCallback(async () => {
+        setCarregando(true)
+        setErro(null)
+        setNaoEncontrado(false)
+
+        try {
+            const dados = await buscarDados()
+            aplicarDados(dados)
+
+        } catch (error) {
+            setErro(error.message || "Erro ao carregar dados")
+            setCarregando(false)
+        }
+
+    }, [buscarDados, aplicarDados])
 
     async function report() {
         if(motivoReport == ""){
@@ -98,9 +124,27 @@ export default function PerguntaClicada(){
         }
     }, [modalReport])
 
-    useEffect( () =>{
-        carregarDados()
-    }, [carregarDados])
+    useEffect(() => {
+        let ativo = true
+
+        buscarDados()
+            .then((dados) => {
+                if (ativo) {
+                    aplicarDados(dados);
+                }
+            })
+            .catch((error) => {
+                if (!ativo) return;
+
+                setErro(error.message || "Erro ao carregar dados")
+                setCarregando(false);
+            })
+
+        return () => {
+            ativo = false
+        }
+
+    }, [buscarDados, aplicarDados])
 
     return(
         <>
