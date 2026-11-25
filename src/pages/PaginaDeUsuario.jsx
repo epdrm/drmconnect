@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase/supabase";
-import { useNavigate, Link, useParams, replace } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { envImagensStorage } from "../services/uploadImages";
 import { ImageUp, FileText, Heart, Trash2, ExternalLink, LogOut } from 'lucide-react';
 import Navbar from "../layout/Navbar";
@@ -98,7 +98,7 @@ export default function PaginaDeUsuario(){
             setCarregando(false)
         }
         buscarUser()
-    }, [id])
+    }, [id, irPara])
     // função para mudar o nome de usuario
     async function editar() {
         const res = await supabase.auth.updateUser({
@@ -115,6 +115,10 @@ export default function PaginaDeUsuario(){
                         avatar_url: imgUrl
                     }
                 })
+                if(res.error){
+                    alert("erro ao enviar para o banco!")
+                    return
+                }
                 alert("Edição Feito")
                 setMudarNome(false)
                 irPara("/home")
