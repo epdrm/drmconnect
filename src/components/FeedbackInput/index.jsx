@@ -2,7 +2,6 @@ import Estrelas from "./elements/Estrelas";
 import Inputs from "./elements/Inputs";
 import { useState } from "react";
 import { supabase } from "../../supabase/supabase"
-import { useNavigate } from "react-router-dom";
 import "../../styles/feedbackCSS.css"
 import { MessageCircleMore, Send, Shield } from 'lucide-react';
 /* Componente de feedback */
