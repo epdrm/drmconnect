@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState, useCallback} from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../supabase/supabase";
 import NavBar from "./../layout/Navbar"
@@ -17,7 +17,7 @@ export default function PerguntaClicada(){
     const [erro, setErro] = useState(null)
     const [naoEncontrado, setNaoEncontrado] = useState(false)
 
-    async function carregarDados() {
+    const carregarDados = useCallback(async () => {
         setErro(null)
         setNaoEncontrado(false)
 
@@ -55,7 +55,7 @@ export default function PerguntaClicada(){
         setPergunta(resPergunta.data)
         setRespostas(resRespostas.data)
         setCarregando(false)
-    }
+    })
 
     async function report() {
         if(motivoReport == ""){
