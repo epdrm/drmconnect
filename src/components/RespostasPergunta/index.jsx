@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { supabase } from "../../supabase/supabase";
-import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../Avatar";
 
