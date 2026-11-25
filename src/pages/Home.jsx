@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "../supabase/supabase";
 import { envImagensStorage } from "../services/uploadImages";
 import { useNavigate, Link } from "react-router-dom";
@@ -7,7 +7,6 @@ import "./../styles/home.css"
 import { buscarImagem } from "../services/sercheAvatar";
 import PostComunidade from "../components/PostComunidade";
 import AcoesPost from "../components/AcoesPost";
-import Sidebar from "../layout/Sidebar"
 import Navbar from "../layout/Navbar";
 import { ChevronLeft } from 'lucide-react';
 import Noticias from "../layout/Noticias";
