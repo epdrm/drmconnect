@@ -13,7 +13,6 @@ export default function FeedbackInput(){
     // descrição do feedback
     const [ estrelas, setEstrelas ] = useState(0)
     // estado para amazenar as estrelas/avaliação
-    const irPara = useNavigate()
 
     async function enviar(){
       if(!titulo.trim() && !descricao.trim()){
