@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "../supabase/supabase";
 import { envImagensStorage } from "../services/uploadImages";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import iconImagem from "./../assets/iconImagem.png"
 import "./../styles/home.css"
 import { buscarImagem } from "../services/sercheAvatar";
@@ -31,7 +31,6 @@ export default function Home(){
   const [idPostReport, setIdPostReport] = useState('')
   const [motivoReport, setMotivoReport] = useState('')
   const [modalReport, setModalReport] = useState(false)
-  const [scrollBody, setScrollBody] = useState(false)
   const [enviando, setEnviando] = useState(false)
   /* acima, são os estados usado para a função de puxar 10 posts por vez,
   pagina = quando o sistema puxa os primeiros 10, ele vai esta em 0, mas quando ele subir 1, significa pro sistema que tem mais 10 sendo
