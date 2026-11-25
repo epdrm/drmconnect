@@ -55,7 +55,7 @@ export default function PerguntaClicada(){
         setPergunta(resPergunta.data)
         setRespostas(resRespostas.data)
         setCarregando(false)
-    })
+    }, [id])
 
     async function report() {
         if(motivoReport == ""){
@@ -63,6 +63,10 @@ export default function PerguntaClicada(){
             return
         }
         const { data: { user }, error } = await supabase.auth.getUser()
+        if(error){
+            alert("usuario não identificado")
+            return
+        }
         const res = await supabase
             .from("reports")
             .insert({
@@ -94,9 +98,9 @@ export default function PerguntaClicada(){
         }
     }, [modalReport])
 
-    useEffect(() =>{
+    useEffect( () =>{
         carregarDados()
-    }, [id])
+    }, [carregarDados])
 
     return(
         <>
