@@ -6,6 +6,10 @@ export default function EnviarResposta({ id, funcao }){
 
     async function enviarResposta() {
         const { data: {user}, error } = await supabase.auth.getUser()
+        if(error){
+            alert("Usuario não identificado!")
+            return
+        }
         const usuarioNome = user.user_metadata?.full_name || user.user_metadata?.name ||  user.user_metadata?.display_name || "???"
         const avatar = user.user_metadata?.avatar_url || null 
 

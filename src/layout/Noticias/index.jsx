@@ -5,20 +5,19 @@ import "./noticias.css"
 export default function Noticias() {
     const [ noticas, setNoticias ] = useState([])
 
-    async function puxarNoticias() {
-        const { data, error } = await supabase
-        .from("news")
-        .select("*")
-        .order("created_at", {ascending: false})
-
-        if(error){
-            return console.error(error)
-        }
-
-        setNoticias(data)
-    }
-
     useEffect(() => {
+        async function puxarNoticias() {
+            const { data, error } = await supabase
+            .from("news")
+            .select("*")
+            .order("created_at", {ascending: false})
+
+            if(error){
+                return console.error(error)
+            }
+
+            setNoticias(data)
+        }
         puxarNoticias()
     }, [])
 

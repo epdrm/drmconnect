@@ -6,7 +6,7 @@ export async function envImagensStorage(nomeDobalde, arquivo) {
   // cria e define um nome para o arquivo
   const fileName = `${Date.now()}-${arquivo.name}`
   // aqui ele vai chamar a função para acessar os bucktes do banco
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from(nomeDobalde)
     .upload(fileName, arquivo)
 

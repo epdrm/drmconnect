@@ -1,18 +1,35 @@
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { supabase } from "../supabase/supabase";
 import { envImagensStorage } from "../services/uploadImages";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import iconImagem from "./../assets/iconImagem.png"
 import "./../styles/home.css"
 import { buscarImagem } from "../services/sercheAvatar";
 import PostComunidade from "../components/PostComunidade";
 import AcoesPost from "../components/AcoesPost";
-import Sidebar from "../layout/Sidebar"
 import Navbar from "../layout/Navbar";
 import { ChevronLeft } from 'lucide-react';
 import Noticias from "../layout/Noticias";
 import useMediaQuery, { TELA_SEM_COLUNA_NOTICIAS } from "../components/hooks/useMediaQuery";
 import Avatar from "../components/Avatar";
+
+//função separada da redenrização, para filtragem dos posts
+function filtrarPosts(postsNovos, postsAnteriores) {
+  const idsExistentes = new Set(
+    postsAnteriores.map(post => post.id)
+  )
+
+  return postsNovos.filter(novoPost => {
+    const jaExiste = idsExistentes.has(novoPost.id)
+
+    idsExistentes.add(novoPost.id)
+
+    const estaBloqueado =
+      localStorage.getItem(`block_${novoPost.id}`) !== null
+
+    return !jaExiste && !estaBloqueado
+  })
+}
 
 /* ESSA É A PAGINA DE COMUNIDADE */
 export default function Home(){
@@ -27,12 +44,11 @@ export default function Home(){
   const textareaRef = useRef(null)
   // estado usado para se referir a textarea, para a função que ele fica maior quando existe bastante texto
   const [pagina, setPagina] = useState(0)
-  const [carregamento, setCarregamento] = useState(false)
+  const [carregamento, setCarregamento] = useState(true)
   const [temMais, setTemMais] = useState(true)
   const [idPostReport, setIdPostReport] = useState('')
   const [motivoReport, setMotivoReport] = useState('')
   const [modalReport, setModalReport] = useState(false)
-  const [scrollBody, setScrollBody] = useState(false)
   const [enviando, setEnviando] = useState(false)
   /* acima, são os estados usado para a função de puxar 10 posts por vez,
   pagina = quando o sistema puxa os primeiros 10, ele vai esta em 0, mas quando ele subir 1, significa pro sistema que tem mais 10 sendo
@@ -40,53 +56,31 @@ export default function Home(){
   carregamento = controle do carregamento da função de puxar posts
   temMais = se tiver mais post que ainda n foram vistos, ele fica true, se não, false
   */
-  const irPara = useNavigate()
   const telaPequena = useMediaQuery(TELA_SEM_COLUNA_NOTICIAS)
 
-   async function buscarPosts(estaPagina){
-    setCarregamento(true)
-    /* Quando ele receber a pagina atual (quantos post devem aparecer) ele faz a seguite conta,
-    a pagina atual * 10, para saber onde o banco deve começar a puxa, e o começo + 10 - 1, onde resultará no numero onde ele deve puxar
-    EX: 
-    estaPagina = 0
-    comeca: 0 * 10 = 0   ate: 0 + 10 - 9 = 9  --> ent ele deve puxar do index 0 ate o 9 (10 posts) 
-    */
-    const comeca = estaPagina * 10
-    const ate = comeca + 10 - 1
+  const buscarPosts = useCallback(async (estaPagina) => {
+    const comeca = estaPagina * 10;
+        /* Quando ele receber a pagina atual (quantos post devem aparecer) ele faz a seguite conta,
+      a pagina atual * 10, para saber onde o banco deve começar a puxa, e o começo + 10 - 1, onde resultará no numero onde ele deve puxar
+      EX: 
+      estaPagina = 0
+      comeca: 0 * 10 = 0   ate: 0 + 10 - 9 = 9  --> ent ele deve puxar do index 0 ate o 9 (10 posts) 
+      */
+    const ate = comeca + 10 - 1;
 
-    const res = await supabase
-    .from("posts")
-    .select('*')
-    .order('create_at', {ascending: false}) // ordenar do mais recente para o mais antigo
-    .range(comeca, ate) // range de post q ele deve puxar, usando as variveis que eu expliquei acima
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("create_at", { ascending: false })
+      .range(comeca, ate);
 
-    if(res.error){
-      alert("olha o console")
-      console.error(res.error)
-    } else{
-      // se no data tiver menos que 10 post, temMais se torna false, pois so tem 10 post
-      if(res.data.length < 10){
-        setTemMais(false)
-      }
-      // filtra posts, para evitar post repetitos
-      setPosts((postAnteriores) => {
-        // ele analise os post existente no estado, e ao puxar os novos, se vinher algum repetito (verificado atravez do id) ele tirar o obj
-      const postFiltro = res.data.filter((novoPost) => {
-        //Verifica se já está na lista de anteriores
-        const jaExiste = postAnteriores.some((postAntigo) => postAntigo.id === novoPost.id)
-        //Verifica se a chave existe no localStorage
-        const estaBloqueado = localStorage.getItem(`block_${novoPost.id}`) !== null
-        return !jaExiste && !estaBloqueado
-      })
-      return [...postAnteriores, ...postFiltro]
-      })
+    if (error) {
+      throw error;
     }
-    setCarregamento(false)
-  }
 
-  async function desFazerLogin() {
-    const res = supabase.auth.signOut()
-  }
+    return data ?? [];
+
+  }, []);
 // função para criar post
   async function criarPost() {
     if(!descricao.trim()){
@@ -151,6 +145,10 @@ export default function Home(){
       return
     }
     const { data: { user }, error } = await supabase.auth.getUser()
+    if(error){
+      alert("usuario não identificado")
+      return
+    }
     const res = await supabase
     .from("reports")
     .insert({
@@ -183,7 +181,46 @@ export default function Home(){
   }, [modalReport])
 
   useEffect(() => {
+    let cancelado = false;
+
     buscarPosts(pagina)
+
+      .then(novosPosts => {
+        if (cancelado) return;
+
+        setTemMais(novosPosts.length === 10);
+
+        setPosts(postAnteriores => {
+          const postsFiltrados = filtrarPosts(
+            novosPosts,
+            postAnteriores
+          )
+
+          return [...postAnteriores, ...postsFiltrados]
+        })
+      })
+
+      .catch(error => {
+        if (cancelado) return;
+
+        alert("Olha o console")
+        console.error(error)
+      })
+
+      .finally(() => {
+        if (!cancelado) {
+          setCarregamento(false)
+        }
+      })
+
+    return () => {
+      cancelado = true
+    }
+
+  }, [pagina, buscarPosts]) // quando o estado pagina for atualizado, ele ja puxa mais 10 post
+    // quando o estado descricao for sendo mudado, ele vai verificando se passa do limite de pixeis
+
+  useEffect(()=>{
     // pega a foto de usuario para exibir para o proprio user
     async function carregarUrlAvatar() {
       const url = await buscarImagem()
@@ -194,8 +231,8 @@ export default function Home(){
       }
     }
     carregarUrlAvatar()
-  }, [pagina]) // quando o estado pagina for atualizado, ele ja puxa mais 10 post
-  // quando o estado descricao for sendo mudado, ele vai verificando se passa do limite de pixeis
+  })
+
   useEffect(() =>{
     const textarea = textareaRef.current
     if(textarea){
