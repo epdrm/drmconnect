@@ -12,6 +12,7 @@ import Navbar from "../layout/Navbar";
 import { ChevronLeft } from 'lucide-react';
 import Noticias from "../layout/Noticias";
 import useMediaQuery, { TELA_SEM_COLUNA_NOTICIAS } from "../components/hooks/useMediaQuery";
+import Avatar from "../components/Avatar";
 
 /* ESSA É A PAGINA DE COMUNIDADE */
 export default function Home(){
@@ -32,6 +33,7 @@ export default function Home(){
   const [motivoReport, setMotivoReport] = useState('')
   const [modalReport, setModalReport] = useState(false)
   const [scrollBody, setScrollBody] = useState(false)
+  const [enviando, setEnviando] = useState(false)
   /* acima, são os estados usado para a função de puxar 10 posts por vez,
   pagina = quando o sistema puxa os primeiros 10, ele vai esta em 0, mas quando ele subir 1, significa pro sistema que tem mais 10 sendo
   puxados
@@ -92,9 +94,17 @@ export default function Home(){
       return
     }
 
+    setEnviando(true)
     try{
       // chama função do /services, para joga a imagem que o usuario quer colocar, no bucket do supa
       let imgUrlLocal = await envImagensStorage("imagens-posts", img)
+
+      // se tinha imagem e o upload falhou (retornou null), interrompe e avisa
+      if (img && imgUrlLocal === null) {
+        alert("Falha ao enviar a imagem. Tente novamente.")
+        return
+      }
+
       // faz verificação de sessao/usuario para consegui nome de usuario e foto do tal
       const { data: { user }, error } = await supabase.auth.getUser()
       if(!user || error){
@@ -102,7 +112,7 @@ export default function Home(){
         return
       }
       const usuarioNome = user.user_metadata?.full_name || user.user_metadata?.name ||  user.user_metadata?.display_name || "???"
-      const avatar = user.user_metadata?.avatar_url || null 
+      const avatar = user.user_metadata?.avatar_url || null
       const res = await supabase
       .from("posts")
       .insert({
@@ -124,6 +134,8 @@ export default function Home(){
 
   }catch(error){
     console.error(error)
+  } finally {
+    setEnviando(false)
   }}
 // função para ver mais posts (se o temMais == true)
   const verMais = () => {
@@ -176,7 +188,7 @@ export default function Home(){
     async function carregarUrlAvatar() {
       const url = await buscarImagem()
       if(url == null || !url ){
-        setFotoDoPerfil("https://placeholder.com")
+        setFotoDoPerfil(null)
       }else{
         setFotoDoPerfil(url)
       }
@@ -200,20 +212,22 @@ export default function Home(){
         <div className="posts">
           <div className="form-post">
             <div className="form-text">
-              <img src={fotoDoPerfil} />
+              <Avatar src={fotoDoPerfil} alt="Você" size={40} className="avatar-lg" />
               <textarea maxLength={200} ref={textareaRef} value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="O que você está pensando hoje?" ></textarea>
             </div>
 
             <div className="form-envio">
               <input type="file" accept="image/png,image/jpeg" onChange={e => setImg(e.target.files[0])} id="input-file" style={{display: "none"}}/>
-              <label htmlFor="input-file"><img src={iconImagem} alt="Icon de imagem" style={{width: "30px", height: "30px", cursor: "pointer"}}/></label>  
-              <button onClick={criarPost}>postar</button>
+              <label htmlFor="input-file"><img src={iconImagem} alt="Icon de imagem" style={{width: "30px", height: "30px", cursor: "pointer"}}/></label>
+              <button onClick={criarPost} disabled={enviando}>
+                {enviando ? "Enviando..." : "postar"}
+              </button>
             </div>
 
           </div>
 
-          {posts.map((item, index) =>(
-            <div key={index} className="perguntas-home">
+          {posts.map((item) =>(
+            <div key={item.id} className="perguntas-home">
               <div className="postContainer">
                 <Link 
                 to={`/feed/${item.id}`}

@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom"; // Removido o 'data' não utilizado
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "./supabase/supabase";
 import Login from "./pages/Login";
@@ -6,7 +6,7 @@ import Cadastro from "./pages/Cadastro";
 import PrivateRoute from "./components/hooks/PrivateRouter";
 import Home from "./pages/Home";
 import PaginaDeUsuario from "./pages/PaginaDeUsuario";
-import FeedBack from "./pages/FeedBack";
+import Feedback from "./pages/Feedback";
 import ResetSenha from "./pages/ResetSenha";
 import PerguntaClicada from "./pages/PerguntaClicada";
 import Inicial from "./pages/Inicial";
@@ -54,7 +54,7 @@ export default function App(){
 
   return (
     <BrowserRouter>
-      <Routes>
+        <Routes>
         <Route path="/" element={loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <p>Autenticando sessão...</p>
@@ -80,7 +80,7 @@ export default function App(){
         }/>
         <Route path="/feedback" element={
           <PrivateRoute user={user} loading={loading}>
-            <FeedBack />
+            <Feedback />
           </PrivateRoute>
         }/>     
         <Route path="/feed/:id" element={

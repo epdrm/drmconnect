@@ -25,7 +25,7 @@ export default function ResetSenha(){
     return(
         <div>
             <h1>Redefina sua senha</h1> <br />
-            <input type="text" onChange={e => setSenha(e.target.value)}/>
+            <input type="password" onChange={e => setSenha(e.target.value)}/>
             <button onClick={() => mudarSenha()}>Confirmar</button>
         </div>
     )

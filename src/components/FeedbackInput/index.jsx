@@ -3,7 +3,7 @@ import Inputs from "./elements/Inputs";
 import { useState } from "react";
 import { supabase } from "../../supabase/supabase"
 import { useNavigate } from "react-router-dom";
-import "../../styles/feedBackCSS.css"
+import "../../styles/feedbackCSS.css"
 import { MessageCircleMore, Send, Shield } from 'lucide-react';
 /* Componente de feedback */
 export default function FeedbackInput(){
@@ -76,7 +76,7 @@ export default function FeedbackInput(){
     </div>
     </div>
         <div className="areaFeedback">
-        <h1>FeedBacks</h1>
+        <h1>Feedbacks</h1>
         <p>Sua opinião nos ajuda a evoluir</p>
         <p>Conte para a gente o que você achou da plataforma <br /> e como podemos melhorar sua experiência.</p>
         </div>
