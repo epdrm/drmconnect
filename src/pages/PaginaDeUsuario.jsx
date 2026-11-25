@@ -105,7 +105,7 @@ export default function PaginaDeUsuario(){
             data: { full_name: nome, serie: serie, sobre_mim: sobreMim }
         })
         if(res.error){
-            alert("mudaça n funcionou")
+            alert("Não foi possivel realizar a mudança")
         }else{
             // quando mudar, ele retorna o user para a home
             if(img !== null){

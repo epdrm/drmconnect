@@ -1,7 +1,7 @@
 import instagram from "./../../assets/paginaInicial/socialMedias/Instagram_logo.png"
 import tiktok from "./../../assets/paginaInicial/socialMedias/tiktok_logo.png"
-import animeProfile from "./../../assets/paginaInicial/patriocinadores/animeprofile.png";
-import logoEp from "./../../assets/paginaInicial/patriocinadores/logoEP.png";
+import animeProfile from "./../../assets/paginaInicial/patrocinadores/animeprofile.png";
+import logoEp from "./../../assets/paginaInicial/patrocinadores/logoEP.png";
 import { useNavigate } from "react-router-dom";
 import "./footer.css"
 
@@ -31,9 +31,9 @@ export default function Footer() {
                     Conectando aprendizado, inovação e evolução em uma única plataforma.
                 </p>
             </div>
-            <div className="patriocinadores">
-                <h3>Patriocinadores</h3>
-                <div className="patriocinadoresIcon">
+            <div className="patrocinadores">
+                <h3>Patrocinadores</h3>
+                <div className="patrocinadoresIcon">
                     <a  href="https://comunidade.animeprofile.com.br/" target="_blank"><img src={animeProfile} alt="anime Profile" /></a>
                     <a href="https://www.instagram.com/eeepdeputadorobertomesquita/" target="_blank"><img src={logoEp} alt="logoEp DRM" /></a>
                 </div>

@@ -71,13 +71,13 @@
     animation: glowMove 6s infinite alternate;
 }
 
-.patriocinadoresIcon{
+.patrocinadoresIcon{
     display: flex;
     flex-direction: row;
     gap:10px;
 }
 
-.patriocinadores img{
+.patrocinadores img{
     height: 35px;
     width:35px;
     border-radius: 3px;
@@ -85,7 +85,7 @@
     cursor: pointer;
 }
 
-.patriocinadores img:hover {
+.patrocinadores img:hover {
     transform: scale(1.2);
     filter: drop-shadow(0 0 12px #ffffff);
 }

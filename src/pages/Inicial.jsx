@@ -66,7 +66,7 @@ export default function  Inicial(){
                         <h2>O conhecimento da DRM se conecta aqui.</h2>
                         <h3>
                             Uma plataforma de perguntas e respostas feita por e para alunos da<br/>
-                            EEEP Deputado Roberto Mesquita.Tire dúvidas sobre as disciplinas, relatórios<br/>
+                            EEEP Deputado Roberto Mesquita. Tire dúvidas sobre as disciplinas, relatórios<br/>
                             de estágio e projetos técnicos.
                         </h3>
                     </div>

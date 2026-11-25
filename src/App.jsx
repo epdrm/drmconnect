@@ -6,7 +6,7 @@ import Cadastro from "./pages/Cadastro";
 import PrivateRoute from "./components/hooks/PrivateRouter";
 import Home from "./pages/Home";
 import PaginaDeUsuario from "./pages/PaginaDeUsuario";
-import FeedBack from "./pages/FeedBack";
+import Feedback from "./pages/Feedback";
 import ResetSenha from "./pages/ResetSenha";
 import PerguntaClicada from "./pages/PerguntaClicada";
 import Inicial from "./pages/Inicial";
@@ -80,7 +80,7 @@ export default function App(){
         }/>
         <Route path="/feedback" element={
           <PrivateRoute user={user} loading={loading}>
-            <FeedBack />
+            <Feedback />
           </PrivateRoute>
         }/>     
         <Route path="/feed/:id" element={

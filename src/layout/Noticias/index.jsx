@@ -36,7 +36,7 @@ export default function Noticias() {
                             <p id="texto-noticia">{item.descricao}</p>
                         </div>
                     </div>
-                )) : <span>sem noticas por hoje!</span>}
+                )) : <span>sem notícias por hoje!</span>}
             </div>
         </>
     )
